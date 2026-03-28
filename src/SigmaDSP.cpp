@@ -708,6 +708,17 @@ void SigmaDSP::EQsecondOrder(uint16_t startMemoryAddress, secondOrderEQ_t &equal
       b1 = -(1 + cos(w0)) * gainLinear;
       b2 = (1 + cos(w0)) * gainLinear / 2;
       break;
+      
+// Allpass
+    case parameters::filterType::allpass: // Pullrequest
+      alpha = sin(w0)/(2*equalizer.Q); 
+      a0 = 1 + alpha;
+      a1 = -2*cos(w0);
+      a2 = 1 - alpha;
+      b0 = (1 - alpha) * gainLinear;
+      b1 = -2*cos(w0) * gainLinear;
+      b2 = (1 + alpha) * gainLinear;
+      break;
   }
 
   // For Sigma DSP implementation we need to normalize all the coefficients respect to a0
