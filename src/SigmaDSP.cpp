@@ -645,7 +645,7 @@ void SigmaDSP::EQsecondOrder(uint16_t startMemoryAddress, secondOrderEQ_t &equal
 
 // Bandpass
     case parameters::filterType::bandpass:
-      alpha = sin(w0) * sinh(log(2)/(2 * equalizer.bandwidth * w0/sin(w0)));
+      alpha = sin(w0) * sinh(log(2)/2 * equalizer.bandwidth * w0/sin(w0));
       a0 = 1 + alpha;
       a1 = -2*cos(w0);
       a2 = 1 - alpha;
@@ -656,7 +656,7 @@ void SigmaDSP::EQsecondOrder(uint16_t startMemoryAddress, secondOrderEQ_t &equal
 
 // Bandstop
     case parameters::filterType::bandstop:
-      alpha = sin(w0) * sinh(log(2)/(2 * equalizer.bandwidth * w0/sin(w0)));
+      alpha = sin(w0) * sinh(log(2)/2 * equalizer.bandwidth * w0/sin(w0));
       a0 = 1 + alpha;
       a1 = -2*cos(w0);
       a2 = 1 - alpha;
