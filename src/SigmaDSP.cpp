@@ -667,7 +667,7 @@ void SigmaDSP::EQsecondOrder(uint16_t startMemoryAddress, secondOrderEQ_t &equal
 
 // Butterworth lowpass
     case parameters::filterType::butterworthLowpass:
-      alpha = sin(w0) / 2.0 * 1/sqrt(2);
+      alpha = sin(w0) / 2.0 * sqrt(2);
       a0 = 1 + alpha;
       a1 = -2*cos(w0);
       a2 = 1 - alpha;
@@ -678,7 +678,7 @@ void SigmaDSP::EQsecondOrder(uint16_t startMemoryAddress, secondOrderEQ_t &equal
 
 // Butterworth highpass
     case parameters::filterType::butterworthHighpass:
-      alpha = sin(w0) / 2.0 * 1/sqrt(2);
+      alpha = sin(w0) / 2.0 * sqrt(2);
       a0 = 1 + alpha;
       a1 = -2*cos(w0);
       a2 = 1 - alpha;
@@ -689,7 +689,7 @@ void SigmaDSP::EQsecondOrder(uint16_t startMemoryAddress, secondOrderEQ_t &equal
 
 // Bessel lowpass
     case parameters::filterType::besselLowpass:
-      alpha = sin(w0) / 2.0 * 1/sqrt(3) ;
+      alpha = sin(w0) / 2.0 * sqrt(3) ;
       a0 = 1 + alpha;
       a1 = -2*cos(w0);
       a2 = 1 - alpha;
@@ -700,7 +700,7 @@ void SigmaDSP::EQsecondOrder(uint16_t startMemoryAddress, secondOrderEQ_t &equal
 
 // Bessel highpass
     case parameters::filterType::besselHighpass:
-      alpha = sin(w0) / 2.0 * 1/sqrt(3) ;
+      alpha = sin(w0) / 2.0 * sqrt(3) ;
       a0 = 1 + alpha;
       a1 = -2*cos(w0);
       a2 = 1 - alpha;
