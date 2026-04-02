@@ -25,7 +25,12 @@ namespace parameters
     butterworthHighpass,
     besselLowpass,
     besselHighpass,
-    allpass
+    allpass,
+    allpass1,
+    lowpass1, 
+    highpass1,
+    lowShelf1,
+    highShelf1 
   };
  
   enum phase {

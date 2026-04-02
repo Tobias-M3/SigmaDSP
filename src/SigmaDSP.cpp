@@ -569,7 +569,8 @@ void SigmaDSP::EQfirstOrder(uint16_t startMemoryAddress, firstOrderEQ_t &equaliz
  * @brief Controls a second order EQ block
  * SigmaStudio path:
  * Filters > Second Order > Single Precision > 1/2/N Ch > General (2nd order)
- *
+ * Formulae from the Audio_EQ_Cookbook: https://webaudio.github.io/Audio-EQ-Cookbook/audio-eq-cookbook.html
+ * 
  * @param startMemoryAddress DSP memory address
  * @param equalizer Equalizer parameter struct
  */
@@ -710,7 +711,7 @@ void SigmaDSP::EQsecondOrder(uint16_t startMemoryAddress, secondOrderEQ_t &equal
       break;
       
 // Allpass
-    case parameters::filterType::allpass: // Pullrequest
+    case parameters::filterType::allpass:
       alpha = sin(w0)/(2*equalizer.Q); 
       a0 = 1 + alpha;
       a1 = -2*cos(w0);
@@ -718,6 +719,58 @@ void SigmaDSP::EQsecondOrder(uint16_t startMemoryAddress, secondOrderEQ_t &equal
       b0 = (1 - alpha) * gainLinear;
       b1 = -2*cos(w0) * gainLinear;
       b2 = (1 + alpha) * gainLinear;
+      break;
+
+// First order Filters from: 
+// https://dsp.stackexchange.com/questions/93446/first-order-filters-in-direct-form-i-rbj-cookbook
+// Allpass first order H = (1-s)/(1+s)
+    case parameters::filterType::allpass1:
+      a0 = sin(w0) + 1 + cos(w0);
+      a1 = sin(w0) - 1 - cos(w0);
+      a2 = 0;
+      b0 = sin(w0) - 1 - cos(w0) * gainLinear;
+      b1 = sin(w0) + 1 + cos(w0) * gainLinear;
+      b2 = 0;
+      break;
+
+// Lowpass first order H = 1/(1+s)
+    case parameters::filterType::lowpass1:
+      a0 = sin(w0) + 1 + cos(w0);
+      a1 = sin(w0) - 1 - cos(w0);
+      a2 = 0;
+      b0 = sin(w0) * gainLinear;
+      b1 = sin(w0) * gainLinear;
+      b2 = 0;
+      break;
+
+// Highpass first order H = s/(1+s)
+    case parameters::filterType::highpass1:
+      a0 = sin(w0) + 1 + cos(w0);
+      a1 = sin(w0) - 1 - cos(w0);
+      a2 = 0;
+      b0 = 1 + cos(w0) * gainLinear;
+      b1 = -1 - cos(w0) * gainLinear;
+      b2 = 0;
+      break;
+      
+// Low shelf first order H = (A+s)/(1/A+s)
+    case parameters::filterType::lowShelf1:
+      a0 = 1/A * sin(w0) + 1 + cos(w0);
+      a1 = 1/A * sin(w0) - 1 - cos(w0);
+      a2 = 0;
+      b0 = A * sin(w0) + 1 + cos(w0) * gainLinear;
+      b1 = A * sin(w0) - 1 - cos(w0) * gainLinear;
+      b2 = 0;
+      break;
+      
+// High shelf first order H = (1+As)/(1+s/A)
+    case parameters::filterType::highShelf1:
+      a0 = sin(w0) + 1/A + 1/A * cos(w0);
+      a1 = sin(w0) - 1/A - 1/A * cos(w0);
+      a2 = 0;
+      b0 = sin(w0) + A + A * cos(w0) * gainLinear;
+      b1 = sin(w0) - A - A * cos(w0) * gainLinear;
+      b2 = 0;
       break;
   }
 
